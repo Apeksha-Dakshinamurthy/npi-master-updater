@@ -1,0 +1,11 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "npi-deps"
+version = "0.0.0"
+description = "No-op local deps package for LangGraph Platform build"
+readme = ""
+requires-python = ">=3.10"
+dependencies = []
