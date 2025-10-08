@@ -1,0 +1,22 @@
+{
+"models": [
+{
+"title": "continue-npi",
+"provider": "openai",
+"model": "gpt-4o-mini",
+"apiKey": "${env:OPENAI_API_KEY}"}
+],
+"mcpServers": [
+{
+"name": "langsmith",
+"command": "C:/Users/ApekshaDakshinamurth/Documents/langchain_test/venv/Scripts/python.exe",
+"args": ["-m", "langsmith_mcp_server.server"],
+"cwd": "C:/Users/ApekshaDakshinamurth/Documents/langchain_test/NPI_master_updater/langsmith-mcp-server",
+"env": {
+"LANGSMITH_API_KEY": "${env:LANGSMITH_API_KEY}",
+"LANGSMITH_PROJECT": "${env:LANGSMITH_PROJECT}",
+"LANGSMITH_ENDPOINT": "${env:LANGSMITH_ENDPOINT}"
+}
+}
+]
+}

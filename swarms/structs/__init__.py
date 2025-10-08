@@ -1,0 +1,1 @@
+# Structs package initialization
