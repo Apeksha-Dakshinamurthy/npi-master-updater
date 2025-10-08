@@ -8,4 +8,4 @@ version = "0.0.0"
 description = "No-op local deps package for LangGraph Platform build"
 readme = ""
 requires-python = ">=3.10"
-dependencies: ["langgraph", "langchain", "langchain-openai", "langchain-community", "tavily-python", "httpx", "openai", "pydantic", "typing_extensions"],
+dependencies: []
