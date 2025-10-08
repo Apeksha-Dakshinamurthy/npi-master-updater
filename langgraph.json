@@ -1,6 +1,7 @@
 {
   "version": "1",
   "dependencies": ["langgraph", "langchain", "langchain-openai", "langchain-community", "tavily-python", "httpx", "openai", "pydantic", "typing_extensions"],
+  "image_distro": "wolfi",
   "graphs": {
     "npi_updater": "server:create_app"
   }
