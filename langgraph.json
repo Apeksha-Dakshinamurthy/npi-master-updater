@@ -1,5 +1,16 @@
 {
   "version": "1",
+  "dependencies": [
+"langgraph",
+"langchain",
+"langchain-openai",
+"langchain-community",
+"openai",
+"tavily-python",
+"httpx",
+"pydantic",
+"typing_extensions"
+],
   "graphs": {
     "npi_updater":  "server:create_app" 
 }
