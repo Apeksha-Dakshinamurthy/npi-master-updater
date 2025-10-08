@@ -8,20 +8,20 @@
 - No existing `server.py` or `langgraph.json` for deployment.
 
 ## Plan
-1. Create `NPI_master_updater/server.py` with a `create_app()` function that imports and returns the compiled graph from `graph.py`.
-2. Create `NPI_master_updater/langgraph.json` config file pointing to the entrypoint.
-3. Update root `requirements.txt` to include necessary dependencies for LangGraph Platform.
+1. ✅ Create `NPI_master_updater/server.py` with a `create_app()` function that imports and returns the compiled graph from `graph.py`.
+2. ✅ Create `NPI_master_updater/langgraph.json` config file pointing to the entrypoint.
+3. ✅ Update root `requirements.txt` to include necessary dependencies for LangGraph Platform.
 
 ## Dependent Files to be edited
-- `NPI_master_updater/server.py` (new file)
-- `NPI_master_updater/langgraph.json` (new file)
-- `requirements.txt` (update)
+- ✅ `NPI_master_updater/server.py` (new file)
+- ✅ `NPI_master_updater/langgraph.json` (new file)
+- ✅ `requirements.txt` (update)
 
 ## Followup Steps
-- Install `langgraph-cli` locally.
-- Test locally with `langgraph dev --config NPI_master_updater/langgraph.json --port 8123`.
-- Verify the API works (e.g., POST to /graphs/npi_updater/invoke with sample input).
-- Commit and push changes to GitHub.
-- Create deployment in LangSmith LangGraph Platform.
-- Set environment variables (OPENAI_API_KEY, TAVILY_API_KEY, etc.).
-- Consume the deployed API.
+- ✅ Install `langgraph-cli` locally.
+- ✅ Test locally with `langgraph dev --config NPI_master_updater/langgraph.json --port 8123`.
+- ✅ Verify the API works (e.g., POST to /graphs/npi_updater/invoke with sample input).
+- ✅ Commit and push changes to GitHub.
+- ⏳ Create deployment in LangSmith LangGraph Platform.
+- ⏳ Set environment variables (OPENAI_API_KEY, TAVILY_API_KEY, etc.).
+- ⏳ Consume the deployed API.
