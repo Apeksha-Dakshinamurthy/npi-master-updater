@@ -1,6 +1,6 @@
 {
   "version": "1",
   "graphs": {
-    "npi_updater": "NPI_master_updater.server:create_app"
+    "npi_updater": "server:create_app"
   }
 }
