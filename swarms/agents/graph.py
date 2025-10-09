@@ -14,6 +14,28 @@ from .validator_supervisor import ValidatorSupervisor
 from ..structs.state import SwarmState
 
 # Define node functions
+def adapt_input_node(state: SwarmState) -> SwarmState:
+    # If Platform/Experiments sent {"input": {...}}, unwrap it
+    incoming = state.get("input") if isinstance(state.get("input"), dict) else state
+
+    # Already normalized?
+    if "input_data" in state and isinstance(state["input_data"], dict):
+        state.setdefault("short_term_memory", [])
+        return state
+
+    row = incoming if isinstance(incoming, dict) else {}
+    state["input_data"] = {
+        "first_name": row.get("PROVIDER_FIRST_NAME", ""),
+        "middle_name": row.get("PROVIDER_MIDDLE_NAME", ""),
+        "last_name": row.get("PROVIDER_LAST_NAME_LEGAL_NAME", ""),
+        "classification": row.get("CLASSIFICATION", ""),
+        "npi_number": str(row.get("NPI", "")),
+        "primary_affiliation_name": row.get("PRIMARY_AFFILIATION_NAME", ""),
+    }
+    state.setdefault("short_term_memory", [])
+    state.setdefault("raw_row", row)
+    return state
+
 def planner_node(state: SwarmState) -> SwarmState:
     print("Planner Node - Initial State Keys:", list(state.keys()))
     print("Planner Node - Initial State:", state)
@@ -267,6 +289,7 @@ def validator_supervisor_node(state: SwarmState) -> SwarmState:
 workflow = StateGraph(SwarmState)
 
 # Add nodes
+workflow.add_node("adapt_input", adapt_input_node)
 workflow.add_node("planner", planner_node)
 workflow.add_node("nppes", nppes_node)
 workflow.add_node("private", private_node)
@@ -296,7 +319,8 @@ def route_planner(state: SwarmState):
         return ["__end__"]
 
 # Define edges
-workflow.add_edge(START, "planner")
+workflow.add_edge(START, "adapt_input")
+workflow.add_edge("adapt_input", "planner")
 workflow.add_conditional_edges("planner", route_planner)
 workflow.add_edge("nppes", "planner")
 workflow.add_edge("private", "planner")
