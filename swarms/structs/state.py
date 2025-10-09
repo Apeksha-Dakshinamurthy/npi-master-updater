@@ -2,9 +2,11 @@ from typing import TypedDict, Optional, List, Annotated, Any
 from langchain_core.messages import BaseMessage
 from langgraph.graph import add_messages
 
-class SwarmState(TypedDict):
+class SwarmState(TypedDict,total=False):
     messages: Annotated[List[BaseMessage], add_messages]
     active_agent: str
+    input: Optional[dict[str, Any]]          # NEW: raw input bucket
+    raw_row: Optional[dict[str, Any]]        # OPTIONAL: keep original row
     input_data: Annotated[dict, lambda x, y: y]  # Use lambda to handle concurrent updates
     planner_output: Annotated[Optional[dict], lambda x, y: y]  # Handle concurrent updates from agents
     nppes_output: Optional[dict]
