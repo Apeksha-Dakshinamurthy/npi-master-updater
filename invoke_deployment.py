@@ -11,7 +11,7 @@ DEPLOYMENT_URL = "https://npi-master-updater-deployme-753d7f75157e5eb5be7da775fc
 
 client = Client()
 examples = list(client.list_examples(dataset_name="npi_1_testset"))
-
+print(examples)
 if not examples:
     print("No examples in dataset")
     exit(1)
@@ -23,8 +23,8 @@ row = example.inputs
 print(f"Using example: {row}")
 
 payload = {
-    "assistant_id": "npi_updater",
-    "inputs": row
+    "assistant_id": "ce66557e-6564-4287-85ed-06a037b34de4",
+    "input": row
 }
 
 headers = {
