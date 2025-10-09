@@ -15,6 +15,20 @@ from ..structs.state import SwarmState
 
 # Define node functions
 def planner_node(state: SwarmState) -> SwarmState:
+    # If input_data not present (e.g., from LangSmith experiment), map the state inputs
+    if "input_data" not in state:
+        state["input_data"] = {
+            "first_name": state.get('PROVIDER_FIRST_NAME', ''),
+            "middle_name": state.get('PROVIDER_MIDDLE_NAME', ''),
+            "last_name": state.get('PROVIDER_LAST_NAME_LEGAL_NAME', ''),
+            "classification": state.get('CLASSIFICATION', ''),
+            "npi_number": str(state.get('NPI', '')),
+            "primary_affiliation_name": state.get('PRIMARY_AFFILIATION_NAME', '')
+        }
+        # Initialize short_term_memory if not present
+        if "short_term_memory" not in state:
+            state["short_term_memory"] = []
+
     #new_state = state.copy()
     planner = PlannerAgent()
     state["planner_output"] = planner.process(state)

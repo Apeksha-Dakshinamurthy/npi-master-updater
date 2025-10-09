@@ -1,39 +1,35 @@
 import asyncio
-from langsmith import Client
+from langsmith import evaluate
 from main import run_swarm
+from dotenv import load_dotenv
 
-async def show_dataset():
-    client = Client()
-    examples = list(client.list_examples(dataset_name="npi_1_testset"))
+load_dotenv()
 
-    print(f"Total examples in dataset: {len(examples)}")
+async def eval_function(inputs):
+    # Map inputs to input_data format
+    input_data = {
+        "first_name": inputs.get('PROVIDER_FIRST_NAME', ''),
+        "middle_name": inputs.get('PROVIDER_MIDDLE_NAME', ''),
+        "last_name": inputs.get('PROVIDER_LAST_NAME_LEGAL_NAME', ''),
+        "classification": inputs.get('CLASSIFICATION', ''),
+        "npi_number": str(inputs.get('NPI', '')),
+        "primary_affiliation_name": inputs.get('PRIMARY_AFFILIATION_NAME', '')
+    }
 
-    for i, example in enumerate(examples):
-        print(f"\nExample {i+1}:")
-        print(f"Inputs: {example.inputs}")
+    # Process through swarm
+    result = await run_swarm(input_data)
+    return result
 
-        # Map inputs to input_data format
-        input_data = {
-            "first_name": example.inputs.get('PROVIDER_FIRST_NAME', ''),
-            "middle_name": example.inputs.get('PROVIDER_MIDDLE_NAME', ''),
-            "last_name": example.inputs.get('PROVIDER_LAST_NAME_LEGAL_NAME', ''),
-            "classification": example.inputs.get('CLASSIFICATION', ''),
-            "npi_number": str(example.inputs.get('NPI', '')),
-            "primary_affiliation_name": example.inputs.get('PRIMARY_AFFILIATION_NAME', '')
-        }
-
-        print(f"Mapped input_data: {input_data}")
-
-        # Process through swarm
-        try:
-            result = await run_swarm(input_data)
-            print(f"Swarm Output: {result}")
-        except Exception as e:
-            print(f"Error processing: {str(e)}")
-
-        if example.outputs:
-            print(f"Dataset Outputs: {example.outputs}")
-        print("---")
+def sync_eval_function(inputs):
+    # Since evaluate expects a sync function, but run_swarm is async, use asyncio.run
+    return asyncio.run(eval_function(inputs))
 
 if __name__ == "__main__":
-    asyncio.run(show_dataset())
+    # Run experiment on LangSmith
+    results = evaluate(
+        sync_eval_function,
+        data="npi_1_testset",
+        description="NPI Updater Experiment",
+        num_repetitions=1
+    )
+    print("Experiment completed. Results:", results)
