@@ -24,7 +24,7 @@ print(f"Using example: {row}")
 
 payload = {
     "assistant_id": "npi_updater",
-    "input": row
+    "inputs": row
 }
 
 headers = {

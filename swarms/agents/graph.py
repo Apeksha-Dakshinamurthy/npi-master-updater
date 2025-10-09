@@ -15,8 +15,8 @@ from ..structs.state import SwarmState
 
 # Define node functions
 def adapt_input_node(state: SwarmState) -> SwarmState:
-    # If Platform/Experiments sent {"input": {...}}, unwrap it
-    incoming = state.get("input") if isinstance(state.get("input"), dict) else state
+    # If Platform/Experiments sent {"inputs": {...}}, unwrap it
+    incoming = state.get("inputs") if isinstance(state.get("inputs"), dict) else state
 
     # Already normalized?
     if "input_data" in state and isinstance(state["input_data"], dict):
@@ -34,6 +34,12 @@ def adapt_input_node(state: SwarmState) -> SwarmState:
     }
     state.setdefault("short_term_memory", [])
     state.setdefault("raw_row", row)
+
+    # Check if all input fields are empty, terminate immediately
+    if not any(state["input_data"].values()):
+        state["final_output"] = {"error": "All input fields are empty"}
+        return state
+
     return state
 
 def planner_node(state: SwarmState) -> SwarmState:
@@ -320,7 +326,7 @@ def route_planner(state: SwarmState):
 
 # Define edges
 workflow.add_edge(START, "adapt_input")
-workflow.add_edge("adapt_input", "planner")
+workflow.add_conditional_edges("adapt_input", lambda state: "planner" if "final_output" not in state else END)
 workflow.add_conditional_edges("planner", route_planner)
 workflow.add_edge("nppes", "planner")
 workflow.add_edge("private", "planner")
