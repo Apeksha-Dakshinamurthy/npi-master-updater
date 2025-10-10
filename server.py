@@ -24,7 +24,7 @@ def _adapt_payload(payload: dict) -> dict:
     return state
 
 # Wrap: adapter → your compiled graph
-app = RunnableLambda(_adapt_payload) | base_app
 
 def create_app():
+    app = RunnableLambda(_adapt_payload) | base_app
     return app
