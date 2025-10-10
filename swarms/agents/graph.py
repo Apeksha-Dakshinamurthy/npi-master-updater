@@ -12,6 +12,7 @@ from .enricher_supervisor import EnricherSupervisor
 from .validator_agent import ValidatorAgent
 from .validator_supervisor import ValidatorSupervisor
 from ..structs.state import SwarmState
+from ..schemas import SwarmInput, SwarmOutput
 
 # Define node functions
 def adapt_input_node(state: SwarmState) -> SwarmState:
@@ -292,7 +293,7 @@ def validator_supervisor_node(state: SwarmState) -> SwarmState:
 
 
 # Build the workflow
-workflow = StateGraph(SwarmState)
+workflow = StateGraph(SwarmState, input=SwarmInput, output=SwarmOutput)
 
 # Add nodes
 workflow.add_node("adapt_input", adapt_input_node)
